@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+
+# Geheimen: alle env-bestanden behalve het voorbeeld
+.env*
+!.env.example
+
+# Lokale demo-data (nep-database en geüploade foto's)
+.data
+
+# Gegenereerd
+next-env.d.ts
+*.tsbuildinfo
+.vercel
