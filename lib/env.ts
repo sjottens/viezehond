@@ -32,5 +32,7 @@ export function baseUrl() {
   if (url) return url.replace(/\/+$/, '');
   // Zonder adres kan Mollie geen webhook sturen en blijven bestellingen op "open" staan
   assertDemoAllowed('NEXT_PUBLIC_BASE_URL');
+  // Vercel geeft het adres van de deploy mee; handig voor de online demo
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return 'http://localhost:3000';
 }

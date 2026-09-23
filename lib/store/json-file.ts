@@ -2,8 +2,9 @@ import 'server-only';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
-// Kleine JSON-"database" voor de lokale demo. Alles staat in de map .data (niet in git).
-export const DATA_DIR = path.join(process.cwd(), '.data');
+// Kleine JSON-"database" voor de demo. Lokaal in de map .data (niet in git).
+// Op Vercel mag je alleen in /tmp schrijven; die wordt gewist zodra de server opnieuw opstart.
+export const DATA_DIR = process.env.VERCEL ? path.join('/tmp', 'viezehond-data') : path.join(process.cwd(), '.data');
 
 let queue: Promise<unknown> = Promise.resolve();
 
