@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Analytics } from '@vercel/analytics/next';
 import { CartDrawer } from '@/components/CartDrawer';
 import { CartProvider } from '@/components/CartProvider';
 import { Footer } from '@/components/Footer';
@@ -22,6 +23,8 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
       <main id="inhoud">{children}</main>
       <Footer />
       <CartDrawer />
+      {/* Alleen de winkel meten, niet het beheer */}
+      <Analytics />
     </CartProvider>
   );
 }

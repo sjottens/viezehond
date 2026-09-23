@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next';
-import { Analytics } from '@vercel/analytics/next';
 import { Bricolage_Grotesque, Figtree } from 'next/font/google';
 import './globals.css';
 
@@ -21,10 +20,7 @@ export const viewport: Viewport = { themeColor: '#fff6e9' };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nl" data-scroll-behavior="smooth" className={`${display.variable} ${body.variable}`}>
-      <body>
-        {children}
-        <Analytics />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
