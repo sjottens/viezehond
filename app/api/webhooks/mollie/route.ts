@@ -1,11 +1,10 @@
-import { syncPayment } from '@/lib/mollie';
+import { syncPayment } from '@/lib/payments';
 
-// Mollie roept dit aan bij elke statuswijziging van een betaling.
+// Mollie roept dit aan bij elke statuswijziging van een betaling (ook bij terugbetalingen).
 // Mollie stuurt alleen het betaling-id; de echte status halen we zelf op bij Mollie.
 export async function POST(req: Request) {
-  const form = await req.formData();
-  const id = form.get('id');
-  if (typeof id !== 'string') return new Response('Missing id', { status: 400 });
+  const id = (await req.formData().catch(() => null))?.get('id');
+  if (typeof id !== 'string' || !/^tr_\w+$/.test(id)) return new Response('Missing id', { status: 400 });
 
   try {
     await syncPayment(id);

@@ -1,6 +1,8 @@
+import { requireAdmin } from '@/lib/admin';
 import { ProductForm } from '../ProductForm';
 
-export default function NewProduct() {
+export default async function NewProduct() {
+  await requireAdmin();
   return (
     <section className="narrow">
       <h1>Product toevoegen</h1>

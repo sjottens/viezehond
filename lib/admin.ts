@@ -1,10 +1,10 @@
 import 'server-only';
 import { cookies } from 'next/headers';
-import { ADMIN_COOKIE, adminToken } from './auth';
+import { redirect } from 'next/navigation';
+import { ADMIN_COOKIE, verifySessionToken } from './session';
 
+// Aanroepen bovenaan elke beheerpagina en elke beheer-actie. Proxy is alleen de voordeur.
 export async function requireAdmin() {
   const token = (await cookies()).get(ADMIN_COOKIE)?.value;
-  if (!process.env.ADMIN_PASSWORD || token !== (await adminToken())) {
-    throw new Error('Niet ingelogd');
-  }
+  if (!(await verifySessionToken(token))) redirect('/admin/login');
 }

@@ -1,4 +1,5 @@
--- Viezehond webshop: voer dit één keer uit in Supabase > SQL Editor
+-- Viezehond webshop: voer dit uit in Supabase > SQL Editor.
+-- Veilig om opnieuw uit te voeren: bestaande tabellen worden bijgewerkt, data blijft staan.
 
 create table if not exists products (
   id uuid primary key default gen_random_uuid(),
@@ -17,7 +18,7 @@ create table if not exists orders (
   id uuid primary key default gen_random_uuid(),
   number bigint generated always as identity (start with 1001),
   status text not null default 'open'
-    check (status in ('open', 'paid', 'shipped', 'failed', 'canceled', 'expired')),
+    check (status in ('open', 'paid', 'shipped', 'failed', 'canceled', 'expired', 'refunded')),
   email text not null,
   name text not null,
   street text not null,
@@ -30,6 +31,7 @@ create table if not exists orders (
   total_cents integer not null,
   mollie_payment_id text unique,
   stock_deducted boolean not null default false,
+  stock_issue boolean not null default false,       -- te weinig voorraad bij betaling
   created_at timestamptz not null default now(),
   paid_at timestamptz,
   shipped_at timestamptz
@@ -52,25 +54,47 @@ alter table products enable row level security;
 alter table orders enable row level security;
 alter table order_items enable row level security;
 
+-- Bijwerken van een bestaande database (van vóór september 2026)
+alter table orders add column if not exists stock_issue boolean not null default false;
+alter table orders drop constraint if exists orders_status_check;
+alter table orders add constraint orders_status_check
+  check (status in ('open', 'paid', 'shipped', 'failed', 'canceled', 'expired', 'refunded'));
+
 -- Zet een bestelling op betaald en haal de voorraad eraf.
 -- Veilig om vaker aan te roepen: de voorraad wordt maar één keer afgeboekt.
-create or replace function mark_order_paid(p_order_id uuid)
+-- Was er te weinig voorraad (twee klanten kochten tegelijk het laatste stuk), dan krijgt
+-- de bestelling stock_issue = true en zie je een waarschuwing in het beheer.
+create or replace function public.mark_order_paid(p_order_id uuid)
 returns void
 language plpgsql
+set search_path = ''
 as $$
 begin
-  update orders
+  update public.orders
      set status = 'paid', paid_at = now(), stock_deducted = true
    where id = p_order_id and stock_deducted = false;
 
   if found then
-    update products p
+    update public.orders
+       set stock_issue = true
+     where id = p_order_id
+       and exists (
+         select 1 from public.order_items oi
+           join public.products p on p.id = oi.product_id
+          where oi.order_id = p_order_id and p.stock < oi.quantity
+       );
+
+    update public.products p
        set stock = greatest(p.stock - oi.quantity, 0)
-      from order_items oi
+      from public.order_items oi
      where oi.order_id = p_order_id and oi.product_id = p.id;
   end if;
 end;
 $$;
+
+-- Alleen de server (service role) mag deze functie aanroepen
+revoke execute on function public.mark_order_paid(uuid) from public, anon, authenticated;
+grant execute on function public.mark_order_paid(uuid) to service_role;
 
 -- Opslag voor productfoto's (openbaar leesbaar)
 insert into storage.buckets (id, name, public)

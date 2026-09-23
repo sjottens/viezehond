@@ -1,10 +1,14 @@
-import type { Product } from '@/lib/db';
+'use client';
+import { useActionState } from 'react';
 import { CATEGORIES } from '@/lib/catalog';
+import type { Product } from '@/lib/types';
 import { saveProduct } from './actions';
 
 export function ProductForm({ product }: { product?: Product }) {
+  const [state, action, pending] = useActionState(saveProduct, { error: null });
+
   return (
-    <form action={saveProduct} className="form">
+    <form action={action} className="form">
       {product && <input type="hidden" name="id" value={product.id} />}
       <input type="hidden" name="image_url" value={product?.image_url ?? ''} />
       <label>Naam<input name="name" required defaultValue={product?.name} /></label>
@@ -19,11 +23,12 @@ export function ProductForm({ product }: { product?: Product }) {
         </select>
       </label>
       <label>Omschrijving<textarea name="description" rows={5} defaultValue={product?.description} /></label>
-      <label>Foto {product?.image_url && <span className="muted">(leeg laten = huidige houden)</span>}
-        <input name="image" type="file" accept="image/*" />
+      <label>Foto (JPG, PNG, WebP of AVIF, max. 5 MB) {product?.image_url && <span className="muted">leeg laten = huidige houden</span>}
+        <input name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" />
       </label>
       <label className="check"><input type="checkbox" name="active" defaultChecked={product?.active ?? true} /> Zichtbaar in de winkel</label>
-      <button className="btn">{product ? 'Wijzigingen opslaan' : 'Product toevoegen'}</button>
+      {state.error && <p className="error" role="alert">{state.error}</p>}
+      <button className="btn" disabled={pending}>{pending ? 'Opslaan…' : product ? 'Wijzigingen opslaan' : 'Product toevoegen'}</button>
     </form>
   );
 }

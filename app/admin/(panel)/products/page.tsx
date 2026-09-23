@@ -1,13 +1,14 @@
 import Link from 'next/link';
-import { db, type Product } from '@/lib/db';
+import { requireAdmin } from '@/lib/admin';
 import { categoryLabel } from '@/lib/catalog';
 import { euro } from '@/lib/money';
+import { store } from '@/lib/store';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ProductsAdmin() {
-  const { data } = await db().from('products').select('*').order('created_at', { ascending: false });
-  const products = (data ?? []) as Product[];
+  await requireAdmin();
+  const products = await store().listProducts({ includeInactive: true });
   return (
     <section>
       <div className="admin-head">
