@@ -65,6 +65,7 @@ export function CartDrawer() {
               <Link href="/afrekenen" className="btn btn-big btn-block" onClick={close}>
                 Afrekenen <ArrowIcon />
               </Link>
+              <button type="button" className="btn btn-ghost btn-block" onClick={close}>Verder winkelen</button>
               <Link href="/winkelwagen" className="link-btn center" onClick={close}>Bekijk winkelwagen</Link>
             </footer>
           </>

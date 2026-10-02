@@ -48,6 +48,7 @@ export default function CartPage() {
             <dt className="total">Totaal</dt><dd className="total">{euro(subtotal + shipping)}</dd>
           </dl>
           <Link href="/afrekenen" className="btn btn-big btn-block">Afrekenen <ArrowIcon /></Link>
+          <Link href="/#producten" className="btn btn-ghost btn-block">Verder winkelen</Link>
         </aside>
       </div>
     </section>
