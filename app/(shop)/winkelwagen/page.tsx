@@ -5,7 +5,7 @@ import { FreeShippingBar } from '@/components/FreeShippingBar';
 import { ProductImage } from '@/components/ProductImage';
 import { Stepper } from '@/components/Stepper';
 import { ArrowIcon } from '@/components/icons';
-import { euro, shippingFor } from '@/lib/money';
+import { euro, shippingFor, vatIncluded, VAT_PERCENT } from '@/lib/money';
 
 export default function CartPage() {
   const { items, ready, subtotal, setQuantity, remove } = useCart();
@@ -46,6 +46,7 @@ export default function CartPage() {
             <dt>Subtotaal</dt><dd>{euro(subtotal)}</dd>
             <dt>Verzending</dt><dd>{shipping === 0 ? 'Gratis' : euro(shipping)}</dd>
             <dt className="total">Totaal</dt><dd className="total">{euro(subtotal + shipping)}</dd>
+            <dt className="vat">Waarvan btw ({VAT_PERCENT}%)</dt><dd className="vat">{euro(vatIncluded(subtotal + shipping))}</dd>
           </dl>
           <Link href="/afrekenen" className="btn btn-big btn-block">Afrekenen <ArrowIcon /></Link>
           <Link href="/#producten" className="btn btn-ghost btn-block">Verder winkelen</Link>

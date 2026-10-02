@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { euro } from '@/lib/money';
+import { euro, vatIncluded, VAT_PERCENT } from '@/lib/money';
 import { useCart } from './CartProvider';
 import { FreeShippingBar } from './FreeShippingBar';
 import { ProductImage } from './ProductImage';
@@ -62,6 +62,7 @@ export function CartDrawer() {
             </ul>
             <footer className="drawer-foot">
               <p className="drawer-total"><span>Subtotaal</span><strong>{euro(subtotal)}</strong></p>
+              <p className="drawer-vat muted">Incl. {euro(vatIncluded(subtotal))} btw ({VAT_PERCENT}%)</p>
               <Link href="/afrekenen" className="btn btn-big btn-block" onClick={close}>
                 Afrekenen <ArrowIcon />
               </Link>

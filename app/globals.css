@@ -433,6 +433,7 @@ code { background: var(--c-kammen); padding: 0.1em 0.35em; border-radius: 6px; f
 .drawer-price { font-variant-numeric: tabular-nums; }
 .drawer-foot { border-top: var(--border); padding-top: 1rem; }
 .drawer-foot .btn + .btn { margin-top: 0.6rem; }
+.drawer-vat { font-size: 0.88rem; text-align: right; margin: -0.6rem 0 0.9rem; }
 .drawer-total { display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 0.9rem; }
 
 /* ---------- Winkelwagenpagina en samenvatting ---------- */
@@ -464,6 +465,7 @@ code { background: var(--c-kammen); padding: 0.1em 0.35em; border-radius: 6px; f
 .totals { display: grid; grid-template-columns: 1fr auto; gap: 0.4rem 0; margin: 0; font-variant-numeric: tabular-nums; }
 .totals dd { margin: 0; padding-left: 2rem; text-align: right; }
 .totals .total { font-weight: 800; font-size: 1.3rem; padding-top: 0.6rem; margin-top: 0.3rem; border-top: var(--border); }
+.totals .vat { color: var(--ink-soft); font-size: 0.9rem; }
 .mini-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
 .mini-list li { display: grid; grid-template-columns: auto 1fr auto; gap: 0.75rem; align-items: center; font-size: 0.95rem; }
 .empty-state { text-align: center; display: grid; justify-items: center; gap: 0.5rem; padding-block: 5rem; }

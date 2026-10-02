@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCart } from '@/components/CartProvider';
 import { ProductImage } from '@/components/ProductImage';
 import { ShieldIcon } from '@/components/icons';
-import { euro, shippingFor } from '@/lib/money';
+import { euro, shippingFor, vatIncluded, VAT_PERCENT } from '@/lib/money';
 
 export default function CheckoutPage() {
   const { items, ready, subtotal } = useCart();
@@ -91,6 +91,7 @@ export default function CheckoutPage() {
             <dt>Subtotaal</dt><dd>{euro(subtotal)}</dd>
             <dt>Verzending</dt><dd>{shipping === 0 ? 'Gratis' : euro(shipping)}</dd>
             <dt className="total">Totaal</dt><dd className="total">{euro(total)}</dd>
+            <dt className="vat">Waarvan btw ({VAT_PERCENT}%)</dt><dd className="vat">{euro(vatIncluded(total))}</dd>
           </dl>
           <Link href="/winkelwagen" className="link-btn small">Wijzig je mandje</Link>
         </aside>
