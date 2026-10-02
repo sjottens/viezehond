@@ -3,11 +3,12 @@ import { useState, type SubmitEvent } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/components/CartProvider';
 import { ProductImage } from '@/components/ProductImage';
+import { Stepper } from '@/components/Stepper';
 import { ShieldIcon } from '@/components/icons';
 import { euro, shippingFor, vatIncluded, VAT_PERCENT } from '@/lib/money';
 
 export default function CheckoutPage() {
-  const { items, ready, subtotal } = useCart();
+  const { items, ready, subtotal, setQuantity } = useCart();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -82,7 +83,10 @@ export default function CheckoutPage() {
             {items.map((i) => (
               <li key={i.productId}>
                 <ProductImage src={i.imageUrl} name={i.name} slug={i.slug} category={i.category} className="thumb small" />
-                <span>{i.quantity} × {i.name}</span>
+                <div className="mini-item">
+                  <span>{i.name}</span>
+                  <Stepper value={i.quantity} max={i.stock} onChange={(n) => setQuantity(i.productId, n)} label={i.name} />
+                </div>
                 <strong>{euro(i.priceCents * i.quantity)}</strong>
               </li>
             ))}
