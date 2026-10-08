@@ -3,7 +3,7 @@ import { CATEGORIES } from '@/lib/catalog';
 import { CookieSettingsButton } from './CookieConsent';
 import { PawIcon } from './icons';
 
-export function Footer() {
+export function Footer({ cookieSettings }: { cookieSettings: boolean }) {
   return (
     <footer className="site-footer">
       <div className="footer-inner">
@@ -24,7 +24,7 @@ export function Footer() {
           <ul>
             <li><Link href="/winkelwagen">Winkelwagen</Link></li>
             <li><Link href="/voorwaarden">Algemene voorwaarden</Link></li>
-            <li><CookieSettingsButton /></li>
+            {cookieSettings && <li><CookieSettingsButton /></li>}
           </ul>
         </nav>
       </div>

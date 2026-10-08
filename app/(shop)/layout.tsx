@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Analytics } from '@vercel/analytics/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { CartDrawer } from '@/components/CartDrawer';
 import { CartProvider } from '@/components/CartProvider';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -9,7 +10,12 @@ import { Marquee } from '@/components/Marquee';
 import { isDemoData, isDemoPayments } from '@/lib/env';
 
 // Google Analytics 4 meet-ID (staat ook in de Google-tag in je GA-account)
-const GA_ID = 'G-QW6BR5WV38';
+const GA_ID = 'G-T0NXV2QJP8';
+const gaId = process.env.NODE_ENV === 'production' ? GA_ID : null;
+
+// TIJDELIJK UIT zolang we Google Analytics controleren: GA laadt nu zonder toestemming te vragen.
+// Zet weer op true zodra GA werkt; voor een Nederlandse winkel is toestemming verplicht.
+const ASK_COOKIE_CONSENT = false;
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   const demo = isDemoData() || isDemoPayments();
@@ -25,12 +31,12 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
       <Marquee />
       <Header />
       <main id="inhoud">{children}</main>
-      <Footer />
+      <Footer cookieSettings={ASK_COOKIE_CONSENT} />
       <CartDrawer />
       {/* Alleen de winkel meten, niet het beheer */}
       <Analytics />
       {/* GA pas na toestemming; lokaal nooit, anders vervuil je de cijfers in Google Analytics */}
-      <CookieConsent gaId={process.env.NODE_ENV === 'production' ? GA_ID : null} />
+      {ASK_COOKIE_CONSENT ? <CookieConsent gaId={gaId} /> : gaId && <GoogleAnalytics gaId={gaId} />}
     </CartProvider>
   );
 }
