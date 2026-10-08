@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CATEGORIES } from '@/lib/catalog';
+import { CookieSettingsButton } from './CookieConsent';
 import { PawIcon } from './icons';
 
 export function Footer() {
@@ -23,6 +24,7 @@ export function Footer() {
           <ul>
             <li><Link href="/winkelwagen">Winkelwagen</Link></li>
             <li><Link href="/voorwaarden">Algemene voorwaarden</Link></li>
+            <li><CookieSettingsButton /></li>
           </ul>
         </nav>
       </div>

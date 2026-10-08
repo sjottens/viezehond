@@ -544,6 +544,28 @@ input:focus, select:focus, textarea:focus { outline: none; box-shadow: 4px 4px 0
   padding: 1.1rem var(--gutter); border-top: 1px solid rgba(255, 246, 233, 0.15); font-size: 0.85rem; opacity: 0.75;
 }
 
+/* ---------- Cookie-melding ---------- */
+.cookie-consent {
+  position: fixed; left: var(--gutter); bottom: var(--gutter); z-index: 60;
+  width: min(calc(100% - 2 * var(--gutter)), 23rem); padding: 1.3rem 1.4rem 1.2rem;
+  background: var(--paper); border: var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  transform: rotate(-1.2deg); animation: cookie-in 0.5s var(--bounce) both;
+}
+.cookie-consent h2 { margin-bottom: 0.4rem; font-size: 1.5rem; }
+.cookie-consent p { font-size: 0.95rem; margin-bottom: 1rem; }
+.cookie-biscuit {
+  position: absolute; top: -1.3rem; right: 1.2rem; display: grid; place-items: center;
+  width: 3rem; height: 3rem; font-size: 1.6rem; background: var(--yellow); border: var(--border); border-radius: 50%;
+  box-shadow: var(--shadow-sm); transform: rotate(14deg);
+}
+.cookie-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.cookie-actions .btn { flex: 1; justify-content: center; }
+@keyframes cookie-in { from { opacity: 0; transform: translateY(2rem) rotate(4deg); } }
+
+.link-button { padding: 0; border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+.site-footer .link-button { color: var(--cream); }
+.site-footer .link-button:hover { color: var(--yellow); text-decoration: underline; }
+
 /* ---------- Beheer ---------- */
 .admin { max-width: 1120px; margin: 0 auto; padding: 0 var(--gutter) 4rem; }
 .admin h1 { font-size: 2.2rem; }
