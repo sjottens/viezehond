@@ -82,5 +82,12 @@ export function supabaseStore(): Store {
     async markOrderPaid(orderId) {
       check(await db.rpc('mark_order_paid', { p_order_id: orderId }));
     },
+    async claimOrderNotification(orderId) {
+      // Alleen de eerste aanroep vindt een rij met notified_at = null
+      const rows = check(
+        await db.from('orders').update({ notified_at: new Date().toISOString() }).eq('id', orderId).is('notified_at', null).select('id'),
+      );
+      return (rows?.length ?? 0) > 0;
+    },
   };
 }

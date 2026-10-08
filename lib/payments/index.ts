@@ -1,5 +1,6 @@
 import 'server-only';
 import { demoPaymentsEnabled } from '../env';
+import { notifyOrderPaid } from '../notify';
 import { store } from '../store';
 import { demoPayments } from './demo';
 import { molliePayments } from './mollie';
@@ -41,7 +42,9 @@ export async function syncPayment(paymentId: string) {
   const orders = store();
 
   if (payment.status === 'paid') {
+    const wasOpen = (await orders.getOrder(payment.orderId))?.status === 'open';
     await orders.markOrderPaid(payment.orderId);
+    if (wasOpen) await notifyOrderPaid(payment.orderId);
     if (payment.refunded) await orders.updateOrderStatus(payment.orderId, 'refunded', ['paid', 'shipped']);
   } else if (payment.status === 'failed' || payment.status === 'canceled' || payment.status === 'expired') {
     await orders.updateOrderStatus(payment.orderId, payment.status, ['open']);

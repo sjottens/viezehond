@@ -63,6 +63,7 @@ export const localStore: Store = {
         created_at: new Date().toISOString(),
         paid_at: null,
         shipped_at: null,
+        notified_at: null,
       };
       db.orders.push(created);
       db.order_items.push(...lines.map((l) => ({ ...l, id: crypto.randomUUID(), order_id: created.id })));
@@ -107,6 +108,14 @@ export const localStore: Store = {
         if (p.stock < item.quantity) o.stock_issue = true;
         p.stock = Math.max(p.stock - item.quantity, 0);
       }
+    });
+  },
+  async claimOrderNotification(orderId) {
+    return change((db) => {
+      const o = db.orders.find((x) => x.id === orderId);
+      if (!o || o.notified_at) return false;
+      o.notified_at = new Date().toISOString();
+      return true;
     });
   },
 };

@@ -23,6 +23,8 @@ export interface Store {
   updateOrderStatus(orderId: string, to: OrderStatus, from: OrderStatus[]): Promise<void>;
   /** Zet op betaald en boekt de voorraad af. Veilig om vaker aan te roepen. */
   markOrderPaid(orderId: string): Promise<void>;
+  /** Geeft alleen de eerste keer true, zodat de bestelmail nooit twee keer de deur uit gaat. */
+  claimOrderNotification(orderId: string): Promise<boolean>;
 }
 
 export { SlugTakenError } from './errors';

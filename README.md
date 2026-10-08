@@ -14,6 +14,7 @@ Open http://localhost:3000. Zonder `.env.local` draait alles als demo:
 - **Nepdata**: producten en bestellingen staan in `.data/db.json`. Opnieuw beginnen: `npm run demo:reset`.
 - **Nep-betalingen**: bij afrekenen kom je op een demo-betaalpagina waar je kiest of de betaling lukt, mislukt, wordt geannuleerd of verloopt.
 - **Beheer**: http://localhost:3000/admin, wachtwoord `demo`.
+- **Bestelmail**: met `ORDER_NOTIFY_EMAIL` in `.env.local` krijg je bij elke betaalde (test)bestelling een mail. Zonder `RESEND_API_KEY` komt die als bestand in `.data/mails`. Zie "Bestelmail" hieronder.
 
 Vul je later `SUPABASE_*` of `MOLLIE_API_KEY` in, dan schakelt dat onderdeel vanzelf over naar het echte werk. In productie gaat de demo nooit per ongeluk aan: dan krijg je een foutmelding, tenzij je bewust `DEMO_MODE=true` zet.
 
@@ -68,6 +69,14 @@ npm run dev
 Open http://localhost:3000 en http://localhost:3000/admin.
 
 Lokaal kan Mollie je webhook niet bereiken. Dat is opgevangen: de bedankpagina vraagt de status zelf op bij Mollie. In testmodus kies je op de Mollie-pagina zelf of de betaling lukt of mislukt.
+
+### Bestelmail (Resend)
+Bij elke betaalde bestelling krijg je één mail met de bestelling, het verzendadres en een link naar het beheer.
+1. Maak een gratis account op resend.com met het adres waarop je de mails wilt krijgen.
+2. Maak bij **API Keys** een key en zet in `.env.local`: `RESEND_API_KEY=re_...` en `ORDER_NOTIFY_EMAIL=jouw@adres.nl`.
+3. Herstart `npm run dev` en plaats een testbestelling.
+
+Tegen spam: de mail gaat alleen naar `ORDER_NOTIFY_EMAIL` (nooit naar het adres dat een klant invult), alleen bij een betaalde bestelling, maximaal één keer per bestelling, en nooit meer dan 10 per uur of 30 per dag. Zolang je geen eigen domein bij Resend hebt geverifieerd, kan Resend bovendien alleen naar je eigen account-adres mailen.
 
 ### 4. Online zetten (Vercel)
 1. Zet het project op GitHub en importeer het in Vercel.

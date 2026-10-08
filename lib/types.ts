@@ -39,6 +39,8 @@ export type Order = Customer & {
   created_at: string;
   paid_at: string | null;
   shipped_at: string | null;
+  /** Wanneer de winkelier per mail over deze bestelling is ingelicht. */
+  notified_at: string | null;
 };
 
 export type OrderLine = {

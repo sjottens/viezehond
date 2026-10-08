@@ -68,6 +68,7 @@ export function seedData() {
       city: o.city, country: o.country, phone: null, subtotal_cents: subtotal, shipping_cents: shipping, total_cents: subtotal + shipping,
       mollie_payment_id: null, stock_deducted: o.status !== 'open', stock_issue: false, created_at: at(o.daysAgo, 9 + i),
       paid_at: o.status === 'open' ? null : at(o.daysAgo, 9 + i), shipped_at: o.status === 'shipped' ? at(o.daysAgo - 1) : null,
+      notified_at: o.status === 'open' ? null : at(o.daysAgo, 9 + i),
     });
   });
 

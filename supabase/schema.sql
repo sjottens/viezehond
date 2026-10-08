@@ -34,7 +34,8 @@ create table if not exists orders (
   stock_issue boolean not null default false,       -- te weinig voorraad bij betaling
   created_at timestamptz not null default now(),
   paid_at timestamptz,
-  shipped_at timestamptz
+  shipped_at timestamptz,
+  notified_at timestamptz                           -- bestelmail naar de winkelier verstuurd
 );
 
 create table if not exists order_items (
@@ -56,6 +57,7 @@ alter table order_items enable row level security;
 
 -- Bijwerken van een bestaande database (van vóór september 2026)
 alter table orders add column if not exists stock_issue boolean not null default false;
+alter table orders add column if not exists notified_at timestamptz;
 alter table orders drop constraint if exists orders_status_check;
 alter table orders add constraint orders_status_check
   check (status in ('open', 'paid', 'shipped', 'failed', 'canceled', 'expired', 'refunded'));
