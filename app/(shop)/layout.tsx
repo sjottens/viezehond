@@ -13,9 +13,8 @@ import { isDemoData, isDemoPayments } from '@/lib/env';
 const GA_ID = 'G-T0NXV2QJP8';
 const gaId = process.env.NODE_ENV === 'production' ? GA_ID : null;
 
-// TIJDELIJK UIT zolang we Google Analytics controleren: GA laadt nu zonder toestemming te vragen.
-// Zet weer op true zodra GA werkt; voor een Nederlandse winkel is toestemming verplicht.
-const ASK_COOKIE_CONSENT = false;
+// Vraag toestemming voor analytische cookies (verplicht in Nederland). Alleen op false zetten om GA te testen.
+const ASK_COOKIE_CONSENT = true;
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   const demo = isDemoData() || isDemoPayments();
