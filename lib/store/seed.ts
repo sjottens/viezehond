@@ -1,7 +1,9 @@
 import type { Order, OrderItem, Product } from '../types';
 
-// Nepdata voor de lokale demo. Houd dit gelijk met supabase/seed.sql.
-const P: Omit<Product, 'id' | 'created_at' | 'image_url' | 'active'>[] = [
+// Nepdata voor de demo (lokaal en op Vercel zolang er geen Supabase is). Houd dit gelijk met supabase/seed.sql.
+// Foto's staan in public/products.
+type SeedProduct = Omit<Product, 'id' | 'created_at' | 'image_url' | 'active'> & { image_url?: string; active?: boolean };
+const P: SeedProduct[] = [
   { slug: 'metalen-kam-fijn-grof', name: 'Metalen kam fijn/grof', category: 'kammen', price_cents: 1295, stock: 40,
     description: 'Stevige kam met twee tandafstanden. De grove kant voor het ontwarren, de fijne kant voor het afwerken.' },
   { slug: 'slickerborstel', name: 'Slickerborstel', category: 'kammen', price_cents: 1750, stock: 25,
@@ -10,15 +12,15 @@ const P: Omit<Product, 'id' | 'created_at' | 'image_url' | 'active'>[] = [
     description: 'Met afgeronde messen die klitten doorsnijden zonder aan de huid te trekken.' },
   { slug: 'borstelhandschoen', name: 'Borstelhandschoen', category: 'kammen', price_cents: 995, stock: 50,
     description: 'Rubberen noppen die losse haren en opgedroogde modder meenemen. Voelt voor je hond als een aai.' },
-  { slug: 'milde-hondenshampoo-250', name: 'Milde hondenshampoo 250 ml', category: 'shampoo', price_cents: 1195, stock: 60,
+  { slug: 'milde-hondenshampoo-250', name: 'Milde hondenshampoo 250 ml', category: 'shampoo', price_cents: 1195, stock: 60, image_url: '/products/shampoo.png',
     description: 'Parfumvrije shampoo met een neutrale pH, ook voor gevoelige huid.' },
   { slug: 'anti-klit-conditioner-250', name: 'Anti-klit conditioner 250 ml', category: 'conditioner', price_cents: 1295, stock: 45,
     description: 'Maakt de vacht soepel en makkelijker te kammen na het wassen.' },
-  { slug: 'droogshampoo-spray', name: 'Droogshampoo spray 200 ml', category: 'droogshampoo', price_cents: 1095, stock: 0,
+  { slug: 'droogshampoo-spray', name: 'Droogshampoo spray 200 ml', category: 'droogshampoo', price_cents: 1095, stock: 40, image_url: '/products/droogshampoo.png',
     description: 'Voor tussendoor: opsprayen, inmasseren en uitborstelen. Zonder water.' },
-  { slug: 'microvezel-badhanddoek', name: 'Microvezel badhanddoek', category: 'handdoeken', price_cents: 1995, stock: 30,
+  { slug: 'microvezel-badhanddoek', name: 'Microvezel badhanddoek', category: 'handdoeken', price_cents: 1995, stock: 30, image_url: '/products/handdoek.jpg',
     description: 'Neemt veel water op, zodat je hond sneller droog is. 60 × 90 cm.' },
-  { slug: 'droogjas-met-capuchon', name: 'Droogjas met capuchon', category: 'handdoeken', price_cents: 3495, stock: 12,
+  { slug: 'droogjas-met-capuchon', name: 'Droogjas met capuchon', category: 'handdoeken', price_cents: 3495, stock: 12, active: false,
     description: 'Badjas van microvezel die je hond aantrekt na het wassen of een natte wandeling. Houdt je bank en auto droog.' },
   { slug: 'wasbundel-shampoo-conditioner-handdoek', name: 'Wasbundel: shampoo, conditioner en handdoek', category: 'bundels', price_cents: 3995, stock: 15,
     description: 'Alles voor één goede wasbeurt: milde hondenshampoo 250 ml, anti-klit conditioner 250 ml en een microvezel badhanddoek. Samen voordeliger dan los.' },
@@ -39,8 +41,8 @@ export function seedData() {
   const products: Product[] = P.map((p, i) => ({
     ...p,
     id: `demo-product-${i + 1}`,
-    image_url: null,
-    active: true,
+    image_url: p.image_url ?? null,
+    active: p.active ?? true,
     created_at: at(30 - i),
   }));
   const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;

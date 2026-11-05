@@ -6,7 +6,7 @@ insert into products (slug, name, description, price_cents, stock, category) val
 ('borstelhandschoen', 'Borstelhandschoen', 'Rubberen noppen die losse haren en opgedroogde modder meenemen. Voelt voor je hond als een aai.', 995, 50, 'kammen'),
 ('milde-hondenshampoo-250', 'Milde hondenshampoo 250 ml', 'Parfumvrije shampoo met een neutrale pH, ook voor gevoelige huid.', 1195, 60, 'shampoo'),
 ('anti-klit-conditioner-250', 'Anti-klit conditioner 250 ml', 'Maakt de vacht soepel en makkelijker te kammen na het wassen.', 1295, 45, 'conditioner'),
-('droogshampoo-spray', 'Droogshampoo spray 200 ml', 'Voor tussendoor: opsprayen, inmasseren en uitborstelen. Zonder water.', 1095, 0, 'droogshampoo'),
+('droogshampoo-spray', 'Droogshampoo spray 200 ml', 'Voor tussendoor: opsprayen, inmasseren en uitborstelen. Zonder water.', 1095, 40, 'droogshampoo'),
 ('microvezel-badhanddoek', 'Microvezel badhanddoek', 'Neemt veel water op, zodat je hond sneller droog is. 60 × 90 cm.', 1995, 30, 'handdoeken'),
 ('droogjas-met-capuchon', 'Droogjas met capuchon', 'Badjas van microvezel die je hond aantrekt na het wassen of een natte wandeling. Houdt je bank en auto droog.', 3495, 12, 'handdoeken'),
 ('wasbundel-shampoo-conditioner-handdoek', 'Wasbundel: shampoo, conditioner en handdoek', 'Alles voor één goede wasbeurt: milde hondenshampoo 250 ml, anti-klit conditioner 250 ml en een microvezel badhanddoek. Samen voordeliger dan los.', 3995, 15, 'bundels'),
