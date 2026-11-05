@@ -9,7 +9,7 @@ export function Footer({ cookieSettings }: { cookieSettings: boolean }) {
       <div className="footer-inner">
         <div className="footer-brand">
           <p className="footer-logo">viezehond<span className="tld">.nl</span></p>
-          <p>Alles om je hond thuis te wassen, kammen en drogen. Zodat de modder buiten blijft en de bank schoon.</p>
+          <p>Alles om je hond thuis te wassen, verzorgen en drogen. Zodat de modder buiten blijft en de bank schoon.</p>
         </div>
         <nav aria-label="Winkel">
           <h2>Winkel</h2>

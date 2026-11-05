@@ -8,10 +8,10 @@ const body = Figtree({ subsets: ['latin'], variable: '--font-body' });
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
   title: {
-    default: 'Viezehond.nl – kammen, shampoo en handdoeken voor je hond',
+    default: 'Viezehond.nl – shampoo, conditioner en handdoeken voor je hond',
     template: '%s · Viezehond.nl',
   },
-  description: 'Kammen, borstels, shampoo en handdoeken voor de vachtverzorging van je hond. Van modderpoot naar showhond.',
+  description: 'Shampoo, conditioner, droogshampoo en handdoeken voor de vachtverzorging van je hond. Van modderpoot naar showhond.',
   openGraph: { siteName: 'Viezehond.nl', locale: 'nl_NL', type: 'website' },
 };
 

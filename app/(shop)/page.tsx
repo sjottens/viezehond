@@ -2,22 +2,22 @@ import Link from 'next/link';
 import { MudWipe } from '@/components/MudWipe';
 import { ProductCard } from '@/components/ProductCard';
 import { ArrowIcon } from '@/components/icons';
-import { CATEGORIES, category } from '@/lib/catalog';
+import { CATEGORIES, category, isForSale } from '@/lib/catalog';
 import { euro, FREE_SHIPPING_FROM_CENTS } from '@/lib/money';
 import { store } from '@/lib/store';
 
 export const dynamic = 'force-dynamic';
 
 const STEPS = [
-  { n: 1, slug: 'kammen', title: 'Kammen', text: 'Eerst klitten en losse haren eruit. Een natte klit wordt alleen maar erger.' },
-  { n: 2, slug: 'shampoo', title: 'Wassen', text: 'Milde shampoo, goed uitspoelen. Parfumvrij, want je hond ruikt al genoeg.' },
+  { n: 1, slug: 'shampoo', title: 'Wassen', text: 'Milde shampoo, goed uitspoelen. Parfumvrij, want je hond ruikt al genoeg.' },
+  { n: 2, slug: 'conditioner', title: 'Verzorgen', text: 'Conditioner erin en even laten intrekken. Dan glijdt de kam straks zo door de vacht.' },
   { n: 3, slug: 'handdoeken', title: 'Drogen', text: 'Stevig deppen met microvezel. Dan schudt hij de rest niet over jou heen.' },
 ];
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ categorie?: string }> }) {
   const { categorie } = await searchParams;
   const active = categorie && category(categorie) ? categorie : undefined;
-  const products = await store().listProducts({ category: active });
+  const products = (await store().listProducts({ category: active })).filter(isForSale);
 
   return (
     <>
@@ -29,7 +29,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
             <span className="h-clean">Zo weer schoon.</span>
           </h1>
           <p className="lede">
-            Kammen, borstels, shampoo en handdoeken om je hond thuis te wassen. Gratis verzending vanaf {euro(FREE_SHIPPING_FROM_CENTS)}.
+            Shampoo, conditioner, droogshampoo en handdoeken om je hond thuis te wassen. Gratis verzending vanaf {euro(FREE_SHIPPING_FROM_CENTS)}.
           </p>
           <div className="hero-actions">
             <a href="#producten" className="btn btn-big">Naar de producten <ArrowIcon /></a>

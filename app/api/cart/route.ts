@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { isForSale } from '@/lib/catalog';
 import { store } from '@/lib/store';
 
 // Actuele prijs en voorraad voor de producten in de winkelwagen (die staat in de browser en kan verouderd zijn).
@@ -8,7 +9,7 @@ export async function POST(req: Request) {
   const products = await store().getProductsByIds(ids);
   return NextResponse.json({
     products: products
-      .filter((p) => p.active)
+      .filter(isForSale)
       .map((p) => ({ id: p.id, slug: p.slug, name: p.name, priceCents: p.price_cents, stock: p.stock, imageUrl: p.image_url, category: p.category })),
   });
 }

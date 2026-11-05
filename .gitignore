@@ -13,3 +13,6 @@ out
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# Bronbestanden voor productfoto's; uploaden gaat via /admin
+/Images

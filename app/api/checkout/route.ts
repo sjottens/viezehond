@@ -4,6 +4,7 @@ import { baseUrl, demoPaymentsEnabled } from '@/lib/env';
 import { shippingFor } from '@/lib/money';
 import { payments } from '@/lib/payments';
 import { clientIp, rateLimit } from '@/lib/rate-limit';
+import { isForSale } from '@/lib/catalog';
 import { store } from '@/lib/store';
 import type { OrderLine } from '@/lib/types';
 
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
   const lines: OrderLine[] = [];
   for (const [productId, quantity] of quantities) {
     const p = products.find((x) => x.id === productId);
-    if (!p || !p.active) return fail('Een product in je winkelwagen is niet meer leverbaar. Verwijder het en probeer opnieuw.');
+    if (!p || !isForSale(p)) return fail('Een product in je winkelwagen is niet meer leverbaar. Verwijder het en probeer opnieuw.');
     if (p.stock < quantity) return fail(`Van "${p.name}" zijn er nog ${p.stock} op voorraad. Pas het aantal aan.`);
     lines.push({ product_id: p.id, name: p.name, unit_price_cents: p.price_cents, quantity });
   }

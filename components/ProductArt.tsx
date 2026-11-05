@@ -5,10 +5,11 @@ const METAL = '#e6eaf2';
 // Geen geel: dat verdwijnt tegen de gele achtergrond van de kammen
 const PALETTE = ['#ff7aa8', '#2b59ff', '#35c48a', '#ff8a3d', '#8b6cff'];
 
-type Kind = 'comb' | 'dematting' | 'brush' | 'glove' | 'bottle' | 'spray' | 'towel' | 'robe' | 'clipper' | 'cup' | 'paw';
+type Kind = 'comb' | 'dematting' | 'brush' | 'glove' | 'bottle' | 'spray' | 'towel' | 'robe' | 'clipper' | 'cup' | 'bundle' | 'paw';
 
 function kindFor(slug: string, category: string): Kind {
   const has = (...words: string[]) => words.some((w) => slug.includes(w));
+  if (has('bundel') || category === 'bundels') return 'bundle';
   if (has('ontklit')) return 'dematting';
   if (has('handschoen')) return 'glove';
   if (has('borstel')) return 'brush';
@@ -19,7 +20,7 @@ function kindFor(slug: string, category: string): Kind {
   if (has('handdoek')) return 'towel';
   if (has('knipper', 'schaar')) return 'clipper';
   if (has('poot', 'reiniger')) return 'cup';
-  return ({ kammen: 'comb', shampoo: 'bottle', handdoeken: 'towel' } as Record<string, Kind>)[category] ?? 'paw';
+  return ({ kammen: 'comb', shampoo: 'bottle', conditioner: 'bottle', droogshampoo: 'spray', handdoeken: 'towel' } as Record<string, Kind>)[category] ?? 'paw';
 }
 
 function colorFor(slug: string) {
@@ -166,6 +167,14 @@ function Drawing({ kind, c }: { kind: Kind; c: string }) {
           <ellipse cx="100" cy="60" rx="38" ry="8" fill="#fff" />
           {[76, 88, 100, 112, 124].map((x) => <line key={x} x1={x} y1="56" x2={x} y2="64" stroke={INK} strokeWidth="3" strokeLinecap="round" />)}
           <Paw x={100} y={126} s={1.2} fill="#fff" />
+        </g>
+      );
+    case 'bundle':
+      return (
+        <g>
+          <g transform="translate(24 18) scale(0.76)"><Drawing kind="towel" c="#ff7aa8" /></g>
+          <g transform="translate(14 78) scale(0.56)"><Drawing kind="bottle" c="#bcd2ff" /></g>
+          <g transform="translate(78 82) scale(0.54)"><Drawing kind="bottle" c="#35c48a" /></g>
         </g>
       );
     default:

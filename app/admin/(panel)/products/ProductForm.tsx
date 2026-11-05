@@ -1,6 +1,6 @@
 'use client';
 import { useActionState } from 'react';
-import { CATEGORIES } from '@/lib/catalog';
+import { CATEGORIES, categoryLabel, PAUSED_CATEGORIES } from '@/lib/catalog';
 import type { Product } from '@/lib/types';
 import { saveProduct } from './actions';
 
@@ -18,8 +18,8 @@ export function ProductForm({ product }: { product?: Product }) {
         <label>Voorraad<input name="stock" type="number" min="0" required defaultValue={product?.stock ?? 0} /></label>
       </div>
       <label>Categorie
-        <select name="category" defaultValue={product?.category ?? 'kammen'}>
-          {CATEGORIES.map((c) => <option key={c.slug} value={c.slug}>{c.label}</option>)}
+        <select name="category" defaultValue={product?.category ?? CATEGORIES[0].slug}>
+          {[...CATEGORIES, ...PAUSED_CATEGORIES].map((c) => <option key={c.slug} value={c.slug}>{categoryLabel(c.slug)}</option>)}
         </select>
       </label>
       <label>Omschrijving<textarea name="description" rows={5} defaultValue={product?.description} /></label>

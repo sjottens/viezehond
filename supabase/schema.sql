@@ -8,7 +8,7 @@ create table if not exists products (
   description text not null default '',
   price_cents integer not null check (price_cents >= 0),   -- prijs incl. btw, in centen
   stock integer not null default 0 check (stock >= 0),
-  category text not null default 'accessoires',
+  category text not null default 'shampoo',
   image_url text,
   active boolean not null default true,
   created_at timestamptz not null default now()
@@ -102,3 +102,8 @@ grant execute on function public.mark_order_paid(uuid) to service_role;
 insert into storage.buckets (id, name, public)
 values ('product-images', 'product-images', true)
 on conflict (id) do nothing;
+
+-- Shampoo, conditioner en droogshampoo als aparte categorieën (nov 2026)
+alter table products alter column category set default 'shampoo';
+update products set category = 'conditioner' where category = 'shampoo' and slug ilike '%conditioner%';
+update products set category = 'droogshampoo' where category = 'shampoo' and slug ilike '%droogshampoo%';

@@ -21,7 +21,10 @@
   /* Kleur per categorie (achtergrond van productillustraties) */
   --c-kammen: #ffe07a;
   --c-shampoo: #bcd2ff;
+  --c-conditioner: #b8ecd2;
+  --c-droogshampoo: #ffe07a;
   --c-handdoeken: #ffc6d9;
+  --c-bundels: #ffd0a8;
   --c-accessoires: #b8ecd2;
 
   --border: 2.5px solid var(--ink);

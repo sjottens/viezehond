@@ -6,7 +6,7 @@ import { AddToCart } from '@/components/AddToCart';
 import { ProductCard, toCartItem } from '@/components/ProductCard';
 import { ProductImage } from '@/components/ProductImage';
 import { ReturnIcon, ShieldIcon, TruckIcon } from '@/components/icons';
-import { category } from '@/lib/catalog';
+import { category, isForSale } from '@/lib/catalog';
 import { euro, FREE_SHIPPING_FROM_CENTS } from '@/lib/money';
 import { store } from '@/lib/store';
 
@@ -15,7 +15,10 @@ export const dynamic = 'force-dynamic';
 type Props = { params: Promise<{ slug: string }> };
 
 // Eén keer ophalen voor zowel de metadata als de pagina
-const getProduct = cache((slug: string) => store().getActiveProductBySlug(slug));
+const getProduct = cache(async (slug: string) => {
+  const p = await store().getActiveProductBySlug(slug);
+  return p && isForSale(p) ? p : null;
+});
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getProduct((await params).slug);
@@ -33,7 +36,7 @@ export default async function ProductPage({ params }: Props) {
   const p = await getProduct(slug);
   if (!p) notFound();
   const cat = category(p.category);
-  const related = (await store().listProducts({ category: p.category })).filter((x) => x.id !== p.id).slice(0, 4);
+  const related = (await store().listProducts({ category: p.category })).filter((x) => x.id !== p.id && isForSale(x)).slice(0, 4);
 
   return (
     <>

@@ -2,7 +2,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { requireAdmin } from '@/lib/admin';
-import { CATEGORIES } from '@/lib/catalog';
+import { CATEGORIES, PAUSED_CATEGORIES } from '@/lib/catalog';
 import { SlugTakenError, store } from '@/lib/store';
 
 const IMAGE_TYPES: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'image/avif': 'avif' };
@@ -27,7 +27,7 @@ export async function saveProduct(_prev: SaveState, formData: FormData): Promise
   if (!name || !slug || Number.isNaN(price_cents) || price_cents < 0 || Number.isNaN(stock) || stock < 0) {
     return { error: 'Vul een naam, een geldige prijs en voorraad in.' };
   }
-  if (!CATEGORIES.some((c) => c.slug === category)) return { error: 'Kies een categorie.' };
+  if (![...CATEGORIES, ...PAUSED_CATEGORIES].some((c) => c.slug === category)) return { error: 'Kies een categorie.' };
 
   let image_url = String(formData.get('image_url') ?? '') || null;
   const file = formData.get('image');
